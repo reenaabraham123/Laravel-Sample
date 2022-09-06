@@ -52,7 +52,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email',
@@ -66,8 +65,16 @@ class UserController extends Controller
             'password'=>bcrypt('123456'),
             'status'=>$request->status
         ];
+        if($request->hasFile('image'))
+        {
+            $extension = $request->image->extension();
+            $fileName = 'user_pic_'.time().'.'.$extension;
+            $destinationPath = public_path().'/images' ;
+            $request->image->move($destinationPath,$fileName);
+            $input['image'] = $fileName;
+        }
         $user = User::create($input);
-        NewUserJob::dispatch($user);
+      //  NewUserJob::dispatch($user);
         return redirect('/')->with('success', 'User created successfully');
     }
 

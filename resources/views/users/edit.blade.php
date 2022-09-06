@@ -23,6 +23,12 @@
                     <input type="text" class="form-control" name="mobile_number" id="mobile_number" value= "{{ $user->mobile_number }}" placeholder="Enter mobile number">
                     @error('mobile_number') <p class="alert-danger">{{ $message }}</p>@enderror
                 </div>
+                @if($user->image!='')
+                <div class="form-group">
+                    <label>Image</label>
+                    <img src="{{url('/images/'.$user->image)}}" width="50" height="50">
+                </div>
+                @endif
                 <div class="form-group">
                     <label>Status</label>
                     <select class="form-control" name="status">
